@@ -7,8 +7,9 @@
 
 char **parsing_string(char * user_string , int* arg_number){
 	int str_len = strlen(user_string);
-	char **array_parsed;
+	char **array_parsed=NULL;
 	int arr_index =0;
+	*arg_number=1;
 	while (arr_index < str_len) {
 	if (user_string[arr_index] == ' ') {
 	    (*arg_number)++;
@@ -16,19 +17,16 @@ char **parsing_string(char * user_string , int* arg_number){
 	arr_index++;
     }
 	char *token = strtok(user_string," ");
-	array_parsed = (char**)malloc((*(arg_number)+1) * sizeof(char));
+	array_parsed = (char**)malloc(((*arg_number)+1) * sizeof(char*));
 	int index =0;
-	while(token != NULL){
-		
-		array_parsed[index]=(char*)malloc((sizeof(token))* (sizeof(char)));
-		strcpy(array_parsed[index],token);
-		printf("arraay _parsed[%d] = %s  token = %s\n ",index,array_parsed[index],token);
-		token = strtok(NULL," ");
-		index++;
-	}
-//	index+=1;
-//	array_parsed[index]=NULL;
-	printf("number of inexs = %d \n",index);
+for (arr_index = 0; arr_index < *arg_number; arr_index++) {
+	int token_size = strlen(token);
+	array_parsed[arr_index] = (char *) malloc(token_size * sizeof(char));
+	strcpy(array_parsed[arr_index], token);
+	token = strtok(NULL, " ");	//make token points to the next word
+    }
+
+    
 	return array_parsed;
 	
 }
@@ -36,8 +34,6 @@ char **parsing_string(char * user_string , int* arg_number){
 
 char *str_in;
 size_t n;
-char *const_str="/usr/bin/";
-
 
 int main (void)
 {
@@ -49,7 +45,9 @@ int main (void)
     
       char **arguments=NULL;
       int arg_num=0;
-      printf (" femto >>>>>>>> ");
+      char path [30]={0};
+      char * path2=getcwd(path,30);
+      printf (" %s >>>>>>>> ",path);
       getline (&str_in, &n, stdin);
       int len = strlen (str_in);
       str_in[len - 1] = 0;
@@ -61,7 +59,12 @@ int main (void)
 	{
 	}
         arguments = parsing_string(str_in,&arg_num);
+	for(int i =0 ; i<arg_num;i++){
+                printf("1111111111111111aguments[%d] = %s /n ",i,arguments[i]);
 
+        }
+	printf("number of parsing strings = %d\n",arg_num);
+	
        if ((!(strcmp ("exit", arguments[0]))))
 	{
 	  printf ("you are wilcome\n");
@@ -89,11 +92,11 @@ int main (void)
 	}
       else if (ret_pid == 0)
 	{
+	
+	for(int i =0 ; i<arg_num;i++){
+		printf("22222222arguments[%d] = %s \n ",i,arguments[i]);
 
-	
-	 // char *n_argv[] = { arguments, NULL };
-	
-		
+	}	
 	  execvp (arguments[0], arguments);
 	  printf ("nter correct command\n");
 	  return 99;
