@@ -24,3 +24,7 @@ i used call system FORK() to generate a new process and then use EXECVP call sys
 using call system wait.
 
 ***
+### task4_dynamic.c 
+***
+is the last version of my code as i handelled it to be dynamic allocation not static
+***
